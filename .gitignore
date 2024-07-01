@@ -1,0 +1,7 @@
+src/.venv/Scripts
+src/.venv/Lib
+*__pycache__*
+src/env
+.env
+env
+stage-deployment.sh
