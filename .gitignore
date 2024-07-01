@@ -4,4 +4,3 @@ src/.venv/Lib
 src/env
 .env
 env
-stage-deployment.sh

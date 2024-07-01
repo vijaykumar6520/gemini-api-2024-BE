@@ -5,9 +5,10 @@ from dotenv import load_dotenv
 load_dotenv(".env")
 from flask import request
 import requests
-from routes.health import health
 import os
 import json
+from routes.health import health
+from routes.gemini import call_gemini
 
 # THIS FILE SHOULD ONLY CONTAIN ROUTING AND LOGGING
 logging.basicConfig(level=logging.INFO)
@@ -20,6 +21,21 @@ def health_route():
     try:
         healthResponse = health() 
         return {"message": healthResponse }, 201
+    except Exception as e:
+        logging.error(e, exc_info=True)
+        return {"success": False, "message": "Internal server error"}, 500
+
+@app.route("/api/prompt", methods=["POST"])
+@cross_origin()
+def gemini_prompt():
+    try:
+        body = request.get_json()
+
+        print(body)
+        resp = call_gemini(body['prompt'])
+
+        return {"res": resp}, 200
+
     except Exception as e:
         logging.error(e, exc_info=True)
         return {"success": False, "message": "Internal server error"}, 500
